@@ -11,15 +11,38 @@ public class DataManager {
 
 	
 	public void leitura(){
-		Path path2 = Paths.get("dados.txt");
+		Path path2 = Paths.get("arts.txt");
 		try (Scanner sc = new Scanner(Files.newBufferedReader(path2, Charset.forName("utf8")))) {
 		  sc.useDelimiter("[\n]"); // separadores: nova linha
-		  String productId, title, price; // atributos de Product
+		  String productId, title;
+		  double price;// atributos de Product
+		  String summary, text; //atributos de Review
+		  long time;//atributos de Review
+		  double score;//atributos de Review
+		  String userId, profileName;//atibutos de User
+		  int positive, total;
 		  while (sc.hasNext()) {
-//		    nome = sc.next();
-//		    data = sc.nextLine();
-//		    cpf = sc.next();
-//		    System.out.format("%s - %s (%s)%n", nome, data, cpf);
+			  productId = sc.nextLine();
+			  sc.next();
+			  title = sc.nextLine();
+			  sc.next();
+			  price = Double.parseDouble(sc.next());
+			  sc.next();
+			  userId = sc.nextLine();
+			  sc.next();
+			  profileName = sc.nextLine();
+			  sc.next();
+			  String help = sc.next();
+			  String[] helpArray = help.split("/");
+			  positive = Integer.parseInt(helpArray[0]);
+			  total = Integer.parseInt(helpArray[1]);
+			  sc.next();
+			  time = Long.parseLong(sc.next());
+			  sc.next();
+			  summary = sc.nextLine();
+			  sc.next();
+			  text = sc.nextLine();
+			  sc.next();
 		  }
 		}
 		catch (IOException x) {

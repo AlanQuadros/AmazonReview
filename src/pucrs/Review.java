@@ -1,7 +1,5 @@
 package pucrs;
 
-import java.util.ArrayList;
-
 public class Review {
 	
 	private double score;
