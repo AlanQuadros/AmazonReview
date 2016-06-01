@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import pucrs.DataManager;
+
 import javax.swing.JLabel;
 import javax.swing.JDesktopPane;
 import javax.swing.JMenuBar;
@@ -22,10 +25,12 @@ public class main extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			DataManager data = new DataManager();
 			public void run() {
 				try {
 					main frame = new main();
 					frame.setVisible(true);
+					data.leitura();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

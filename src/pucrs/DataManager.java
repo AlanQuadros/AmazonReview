@@ -11,38 +11,44 @@ public class DataManager {
 
 	
 	public void leitura(){
-		Path path2 = Paths.get("arts.txt");
+		Path path2 = Paths.get("Arts.txt");
 		try (Scanner sc = new Scanner(Files.newBufferedReader(path2, Charset.forName("utf8")))) {
 		  sc.useDelimiter("[\n]"); // separadores: nova linha
-		  String productId, title;
-		  double price;// atributos de Product
-		  String summary, text; //atributos de Review
-		  long time;//atributos de Review
-		  double score;//atributos de Review
+		  String productId, title, price;// atributos de Product
+		  String summary, text, time, score; //atributos de Review
 		  String userId, profileName;//atibutos de User
-		  int positive, total;
+		  String positive, total;//atributos de Helpfulness
+		  String next;
 		  while (sc.hasNext()) {
-			  productId = sc.nextLine();
-			  sc.next();
-			  title = sc.nextLine();
-			  sc.next();
-			  price = Double.parseDouble(sc.next());
-			  sc.next();
-			  userId = sc.nextLine();
-			  sc.next();
-			  profileName = sc.nextLine();
-			  sc.next();
-			  String help = sc.next();
+			  next = sc.next();
+			  productId = next.substring(next.indexOf(":")+2);
+			  next = sc.next();
+			  title = next.substring(next.indexOf(":")+2);
+			  next = sc.next();
+			  price = next.substring(next.indexOf(":")+2);
+			  next = sc.next();
+			  userId = next.substring(next.indexOf(":")+2);
+			  next = sc.next();
+			  profileName = next.substring(next.indexOf(":")+2);
+			  next = sc.next();
+			  String help = next.substring(next.indexOf(":")+2);
 			  String[] helpArray = help.split("/");
-			  positive = Integer.parseInt(helpArray[0]);
-			  total = Integer.parseInt(helpArray[1]);
+			  positive = helpArray[0];
+			  total = helpArray[1];
+			  next = sc.next();
+			  score = next.substring(next.indexOf(":")+2);
+			  next = sc.next();
+			  time = next.substring(next.indexOf(":")+2);
+			  next = sc.next();
+			  summary = next.substring(next.indexOf(":")+2);
+			  next = sc.next();
+			  text = next.substring(next.indexOf(":")+2);
 			  sc.next();
-			  time = Long.parseLong(sc.next());
-			  sc.next();
-			  summary = sc.nextLine();
-			  sc.next();
-			  text = sc.nextLine();
-			  sc.next();
+			  
+			  Product product = new Product(productId, title, Double.parseDouble(price));
+			  Review review = new Review(Double.parseDouble(score), Long.parseLong(time), summary, text);
+			  User user = new User(userId, profileName);
+			  Helpfulness helpfulness = new Helpfulness(Integer.parseInt(positive), Integer.parseInt(total));
 		  }
 		}
 		catch (IOException x) {

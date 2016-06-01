@@ -9,6 +9,12 @@ public class Helpfulness {
 		super();
 	}
 
+	public Helpfulness(int positive, int total) {
+		super();
+		this.positive = positive;
+		this.total = total;
+	}
+
 	public int getPositive() {
 		return positive;
 	}

@@ -14,6 +14,18 @@ public class Review {
 		super();
 	}
 
+	
+	
+	public Review(double score, long time, String summary, String text) {
+		super();
+		this.score = score;
+		this.time = time;
+		this.summary = summary;
+		this.text = text;
+	}
+
+
+
 	public double getScore() {
 		return score;
 	}

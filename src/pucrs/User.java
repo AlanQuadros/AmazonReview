@@ -11,6 +11,14 @@ public class User {
 	public User() {
 		super();
 	}
+	
+	public User(String userId, String profileName) {
+		super();
+		this.userId = userId;
+		this.profileName = profileName;
+	}
+
+
 
 	public String getUserId() {
 		return userId;

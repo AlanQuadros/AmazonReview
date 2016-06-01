@@ -8,12 +8,23 @@ public class Product {
 	public final double UNDEFINED_PRICE = -2;
 	private String productId;
 	private String title;
-	private double price;
+	private Double price;
 	private ArrayList<Review> reviews;
 	
 	public Product() {
 		super();
 	}
+	
+	
+
+	public Product(String productId, String title, double price) {
+		super();
+		this.productId = productId;
+		this.title = title;
+		this.price = price;
+	}
+
+
 
 	public String getProductId() {
 		return productId;
@@ -31,11 +42,11 @@ public class Product {
 		this.title = title;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
