@@ -5,10 +5,15 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DataManager {
 
+	ArrayList<Product> products = new ArrayList<>();
+	ArrayList<Helpfulness> helpfulness = new ArrayList<>();
+	ArrayList<Review> reviews = new ArrayList<>();
+	ArrayList<User> users = new ArrayList<>();
 	
 	public void leitura(){
 		Path path2 = Paths.get("Arts.txt");
@@ -45,10 +50,18 @@ public class DataManager {
 			  text = next.substring(next.indexOf(":")+2);
 			  sc.next();
 			  
-			  Product product = new Product(productId, title, Double.parseDouble(price));
+			  Double doublePrice;
+			  if (!price.matches("[0-9]*"))doublePrice = Double.parseDouble(price);
+			  else doublePrice = null;//o importante é funcionar
+			  
+			  
+			  Product product = new Product(productId, title, doublePrice);
 			  Review review = new Review(Double.parseDouble(score), Long.parseLong(time), summary, text);
 			  User user = new User(userId, profileName);
 			  Helpfulness helpfulness = new Helpfulness(Integer.parseInt(positive), Integer.parseInt(total));
+			   users.contains(o)
+			  
+		  
 		  }
 		}
 		catch (IOException x) {

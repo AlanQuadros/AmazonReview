@@ -8,7 +8,7 @@ public class Product {
 	public final double UNDEFINED_PRICE = -2;
 	private String productId;
 	private String title;
-	private Double price;
+	private Double price;//Cuidado, price pode ser null
 	private ArrayList<Review> reviews;
 	
 	public Product() {
