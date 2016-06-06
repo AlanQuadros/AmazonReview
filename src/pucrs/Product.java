@@ -50,12 +50,12 @@ public class Product {
 		this.price = price;
 	}
 
-	public ArrayList<Review> getReviews() {
-		return reviews;
+	public Review getReview(int index) {
+		return reviews.get(index);
 	}
 
-	public void setReviews(ArrayList<Review> reviews) {
-		this.reviews = reviews;
+	public void setReview(Review review) {
+		reviews.add(review);
 	}
 	
 	

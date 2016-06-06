@@ -59,7 +59,11 @@ public class DataManager {
 			  Review review = new Review(Double.parseDouble(score), Long.parseLong(time), summary, text);
 			  User user = new User(userId, profileName);
 			  Helpfulness helpfulness = new Helpfulness(Integer.parseInt(positive), Integer.parseInt(total));
-			   users.contains(o)
+			  product.setReview(review);
+			  review.setProducts(product);
+			  review.setHelp(helpfulness);
+			  review.setUser(user);
+			  user.setReview(review);
 			  
 		  
 		  }

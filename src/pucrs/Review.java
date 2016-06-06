@@ -6,7 +6,7 @@ public class Review {
 	private long time;
 	private String summary;
 	private String text;
-	private User users;
+	private User user;
 	private Product products;
 	private Helpfulness help;
 	
@@ -58,12 +58,12 @@ public class Review {
 		this.text = text;
 	}
 
-	public User getUsers() {
-		return users;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUsers(User users) {
-		this.users = users;
+	public void setUser(User users) {
+		this.user = users;
 	}
 
 	public Product getProducts() {
