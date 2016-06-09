@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 public class DataManager {
@@ -94,4 +96,62 @@ public class DataManager {
 		  System.err.format("Erro de E/S: %s%n", x);
 		}
 	}
+	
+	public Product searchInfoProductById(int id){
+		Product result = new Product();
+		for(Product p : products){
+			if(p.getProductId() == Integer.toString(id)){
+				result = p;
+			}
+		}
+		
+		return result;
+	}
+	
+	public User searchInfoUserByIdName(int id){
+		User result = new User();
+		for(User u : users){
+			if(u.getUserId() == Integer.toString(id)){
+				result = u;
+			}
+		}
+		
+		return result;
+	}
+	
+	public User searchInfoUserByIdName(String name){
+		User result = new User();
+		for(User u : users){
+			if(u.getProfileName().toUpperCase().contains(name.toUpperCase())){
+				result = u;
+			}
+		}
+		
+		return result;
+	}
+	
+	public ArrayList<Review> searchReviewByString(String partOfString){
+		ArrayList<Review> result = new ArrayList<>();
+		
+		for(Review r : reviews){
+			if(r.getText().toUpperCase().contains(partOfString.toUpperCase())){
+				result.add(r);
+			}
+		}
+		Collections.sort(result);
+		return result;
+	}
+	
+	public ArrayList<Product> getBestReviewed(){
+		ArrayList<Product> result = new ArrayList<>();
+		for(Product p : products){
+			if(p.getAllReviewsSize() > 9){
+				result.add(p);
+			}
+		}
+		
+		// Fazer a ordenação do Result
+		return result;
+	}
+	
 }

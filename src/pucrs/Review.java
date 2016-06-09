@@ -1,6 +1,8 @@
 package pucrs;
 
-public class Review {
+import java.util.Comparator;
+
+public class Review implements Comparable<Review>{
 	
 	private double score;
 	private long time;
@@ -81,7 +83,9 @@ public class Review {
 	public void setHelp(Helpfulness help) {
 		this.help = help;
 	}
-	
-	
-	
+
+	@Override
+	public int compareTo(Review o) {
+		return this.products.getTitle().compareTo(o.getProducts().getTitle());
+	}	
 }

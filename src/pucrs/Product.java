@@ -2,7 +2,7 @@ package pucrs;
 
 import java.util.ArrayList;
 
-public class Product {
+public class Product{
 
 	public final double UNKOWN_PRICE = -1;
 	public final double UNDEFINED_PRICE = -2;
@@ -58,6 +58,11 @@ public class Product {
 		reviews.add(review);
 	}
 	
+	public ArrayList<Review> getAllReviews(){
+		return reviews;
+	}	
 	
-	
+	public int getAllReviewsSize(){
+		return reviews.size();
+	}	
 }

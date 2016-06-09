@@ -44,5 +44,9 @@ public class User {
 		this.reviews.add(review);
 	}
 	
+	public ArrayList<Review> returnAllReviews(){
+		return reviews;
+	}
+	
 	
 }
