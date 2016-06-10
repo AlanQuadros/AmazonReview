@@ -6,7 +6,7 @@ public class User {
 
 	private String userId;
 	private String profileName;
-	private ArrayList<Review> reviews;
+	private ArrayList<Review> reviews = new ArrayList<>();
 	
 	public User() {
 		super();
@@ -40,7 +40,7 @@ public class User {
 		return reviews.get(index);
 	}
 
-	public void setReview(Review review) {
+	public void addReview(Review review) {
 		this.reviews.add(review);
 	}
 	
