@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -157,6 +158,41 @@ public class DataManager {
 		
 		for(Double b : averageReviews){
 			result.add(idProduct.get(idReview.get(b)));
+		}
+		
+		return result;
+	}
+	
+	public ArrayList<User> getUsefulUsers(){
+		HashMap<User, Integer> usefulUser = new HashMap<>(); 
+		HashMap<Integer, User> idUser = new HashMap<>();
+		HashMap<Integer, Integer> idUseful = new HashMap<>();
+		ArrayList<User> result = new ArrayList<>();
+		
+		for (User user : userReview.keySet()) {
+			int id = new Random().nextInt();
+			ArrayList<Review> userReviews = user.returnAllReviews();
+			int positive = 0;
+			int total = 0;
+			for (Review review : userReviews) {
+				positive = review.getHelp().getPositive();
+				total = review.getHelp().getTotal();
+			}
+			Integer useful = positive/total;  
+			usefulUser.put(user, useful);
+			idUser.put(id, user);
+			idUseful.put(useful, id);
+		}
+		
+		List<Integer> usefulList = new ArrayList<>(usefulUser.values());
+		Collections.sort(usefulList);
+		
+		while(usefulList.size() > 20){
+			usefulList.remove(usefulList.size()-1);
+		}
+		
+		for (Integer i : usefulList) {
+			result.add(idUser.get(idUseful.get(i)));
 		}
 		
 		return result;
