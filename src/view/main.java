@@ -2,12 +2,14 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import pucrs.DataManager;
+import pucrs.User;
 
 import javax.swing.JLabel;
 import javax.swing.JDesktopPane;
@@ -31,6 +33,11 @@ public class main extends JFrame {
 					main frame = new main();
 					frame.setVisible(true);
 					data.leitura();
+					ArrayList<User> users = data.getUsefulUsers();
+					for (User user : users) {
+						System.out.println(user.getUserId());
+					}
+					System.out.println();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

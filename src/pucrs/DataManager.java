@@ -8,9 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -83,11 +81,11 @@ public class DataManager {
 
 				if (!userReview.containsKey(user)) {
 					ArrayList<Review> reviews = new ArrayList<>();
+					reviews.add(review);
 					userReview.put(user, reviews);
 				} else {
 					ArrayList<Review> reviews = userReview.get(user);
 					reviews.add(review);
-					userReview.put(user, reviews);
 				}
 			}
 		} catch (IOException x) {
@@ -164,41 +162,51 @@ public class DataManager {
 	}
 	
 	public ArrayList<User> getUsefulUsers(){
-		HashMap<User, Integer> usefulUser = new HashMap<>(); 
+		HashMap<User, Double> usefulUser = new HashMap<>(); 
 		HashMap<Integer, User> idUser = new HashMap<>();
-		HashMap<Integer, Integer> idUseful = new HashMap<>();
+		HashMap<Double, Integer> idUseful = new HashMap<>();
 		ArrayList<User> result = new ArrayList<>();
 		
 		for (User user : userReview.keySet()) {
 			int id = new Random().nextInt();
 			ArrayList<Review> userReviews = userReview.get(user);
-			int positive = 0;
-			int total = 0;
+			double positive = 0;
+			double total = 0;
 			for (Review review : userReviews) {
-				positive = review.getHelp().getPositive();
-				total = review.getHelp().getTotal();
+				positive += review.getHelp().getPositive();
+				total += review.getHelp().getTotal();
 			}
-			Integer useful = positive/total;  
-			usefulUser.put(user, useful);
-			idUser.put(id, user);
-			idUseful.put(useful, id);
+			if (total > 0) {
+				Double useful = positive/total;  
+				usefulUser.put(user, useful);
+				idUser.put(id, user);
+				idUseful.put(useful, id);
+			}
 		}
 		
-		List<Integer> usefulList = new ArrayList<>(usefulUser.values());
+		List<Double> usefulList = new ArrayList<>(usefulUser.values());
 		Collections.sort(usefulList);
 		
 		while(usefulList.size() > 20){
 			usefulList.remove(usefulList.size()-1);
 		}
 		
-		for (Integer i : usefulList) {
+		for (Double i : usefulList) {
 			result.add(idUser.get(idUseful.get(i)));
 		}
 		
 		return result;
 	}
 	
-	private Double averageReview(ArrayList<Review> reviews){
+	public void assessmentsPerMonth(){
+		
+		for (User user : userReview.keySet()) {
+			ArrayList<Review> userReviews = userReview.get(user);
+			
+		}
+	}
+	
+ 	private Double averageReview(ArrayList<Review> reviews){
 		double result = 0;
 		
 		for(Review r : reviews){
