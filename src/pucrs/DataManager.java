@@ -171,7 +171,7 @@ public class DataManager {
 		
 		for (User user : userReview.keySet()) {
 			int id = new Random().nextInt();
-			ArrayList<Review> userReviews = user.returnAllReviews();
+			ArrayList<Review> userReviews = userReview.get(user);
 			int positive = 0;
 			int total = 0;
 			for (Review review : userReviews) {
