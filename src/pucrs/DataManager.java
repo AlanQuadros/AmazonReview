@@ -94,11 +94,6 @@ public class DataManager {
 		}
 	}
 
-	public void teste() {
-		System.out.println(productReview.size());
-		System.out.println(userReview.size());
-	}
-
 	public Product searchProductByIdName(String search) {
 		for (Product p : productReview.keySet()) {
 			if (p.getProductId().equalsIgnoreCase(search))
