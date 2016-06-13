@@ -14,9 +14,9 @@ import java.util.Scanner;
 
 public class DataManager {
 
-	ArrayList<Product> products = new ArrayList<>();
-	ArrayList<Review> reviews = new ArrayList<>();
-	ArrayList<User> users = new ArrayList<>();
+	HashMap<Product, ArrayList<Review>> productReview = new HashMap<>();
+	HashMap<User, ArrayList<Review>> userReview = new HashMap<>();
+	ArrayList<Review> allReview = new ArrayList<>();
 
 	public void leitura() {
 		Path path2 = Paths.get("Arts.txt");
@@ -64,108 +64,97 @@ public class DataManager {
 				// insere os atributos
 				Helpfulness help = new Helpfulness(Integer.parseInt(positive), Integer.parseInt(total));
 				Review review = new Review(Double.parseDouble(score), Long.parseLong(time), summary, text);
-				review.setHelp(help);
 				User user = new User(userId, profileName);
 				Product product = new Product(productId, title, doublePrice);
-
-				boolean isNewProduct = true;
-
-				for (Product p : products) {
-					if (p.getProductId().equalsIgnoreCase(product.getProductId())) {
-						product = p;
-						isNewProduct = false;
-						break;
-					}
+				review.setHelp(help);
+				review.setUser(user);
+				allReview.add(review);
+				
+				if (!productReview.containsKey(product)) {
+					ArrayList<Review> reviews = new ArrayList<>();
+					productReview.put(product, reviews);
+				} else {
+					ArrayList<Review> reviews = productReview.get(product);
+					reviews.add(review);
+					productReview.replace(product, reviews);
 				}
 
-				if (isNewProduct) {
-					products.add(product);
+				if (!userReview.containsKey(user)) {
+					ArrayList<Review> reviews = new ArrayList<>();
+					userReview.put(user, reviews);
+				} else {
+					ArrayList<Review> reviews = userReview.get(user);
+					reviews.add(review);
+					userReview.put(user, reviews);
 				}
-
-				boolean isNewUser = true;
-
-				for (User u : users) {
-					if (u.getUserId().equalsIgnoreCase(user.getUserId())) {
-						user = u;
-						isNewUser = false;
-						break;
-					}
-				}
-
-				if (isNewUser) {
-					users.add(user);
-				}
-
-				reviews.add(review);
-				product.addReview(review);
-				user.addReview(review);
 			}
 		} catch (IOException x) {
 			System.err.format("Erro de E/S: %s%n", x);
 		}
 	}
 
-	public Product searchInfoProductById(int id) {
-		Product result = new Product();
-		for (Product p : products) {
-			if (p.getProductId() == Integer.toString(id)) {
-				result = p;
-			}
-		}
-
-		return result;
+	public void teste() {
+		System.out.println(productReview.size());
+		System.out.println(userReview.size());
 	}
 
-	public User searchInfoUserByIdName(int id) {
-		User result = new User();
-		for (User u : users) {
-			if (u.getUserId() == Integer.toString(id)) {
-				result = u;
-			}
+	public Product searchProductByIdName(String search) {
+		for (Product p : productReview.keySet()) {
+			if (p.getProductId().equalsIgnoreCase(search))
+				return p;
+			else if (p.getTitle().toUpperCase().contains(search.toUpperCase()))
+				return p;
 		}
 
-		return result;
+		return null;
 	}
 
-	public User searchInfoUserByIdName(String name) {
-		User result = new User();
-		for (User u : users) {
-			if (u.getProfileName().toUpperCase().contains(name.toUpperCase())) {
-				result = u;
-			}
+	public User searchUserByIdName(String search) {
+		for (User u : userReview.keySet()) {
+			if (u.getUserId().equalsIgnoreCase(search))
+				return u;
+			else if (u.getProfileName().toUpperCase().contains(search.toUpperCase()))
+				return u;
 		}
-
-		return result;
+		return null;
 	}
 
 	public ArrayList<Review> searchReviewByString(String partOfString) {
 		ArrayList<Review> result = new ArrayList<>();
 
-		for (Review r : reviews) {
+		for (Review r : allReview) {
 			if (r.getText().toUpperCase().contains(partOfString.toUpperCase())) {
 				result.add(r);
 			}
 		}
+		
 		Collections.sort(result);
+		
 		return result;
 	}
-
-	public ArrayList<Product> getBestReviewed() {
+	
+	public ArrayList<Product> getBestReviewed(){
+		HashMap<Product, Double> productBestReview = new HashMap<>();
 		ArrayList<Product> result = new ArrayList<>();
 		
-		for (Product p : products) {
-			if (p.getAllReviewsSize() >= 10) {
-				result.add(p);
+		for(Product p : productReview.keySet()){
+			ArrayList<Review> allReviews = productReview.get(p);
+			if(allReviews.size() >= 10){
+				productBestReview.put(p, averageReview(allReviews));
 			}
-		}
-
-		Collections.sort(result);
-		
-		while(result.size() > 20){
-			result.remove(result.size()-1);
 		}
 		
 		return result;
 	}
-
+	
+	private Double averageReview(ArrayList<Review> reviews){
+		double result = 0;
+		
+		for(Review r : reviews){
+			result += r.getScore();
+		}
+		
+		return result/reviews.size();
+	}
+	
 }

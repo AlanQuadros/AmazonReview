@@ -74,4 +74,20 @@ public class Product implements Comparable<Product> {
 	public int compareTo(Product o) {
 		return this.getAverageReview().compareTo(o.getAverageReview());
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof Product){
+			Product p = (Product) o;
+			return this.productId.equalsIgnoreCase(p.productId);
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		int hashcode = 0;
+		hashcode += this.productId.hashCode();
+		return hashcode;
+	}
 }

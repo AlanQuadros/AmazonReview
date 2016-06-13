@@ -48,5 +48,19 @@ public class User {
 		return reviews;
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof User){
+			User u = (User) o;
+			return this.userId.equalsIgnoreCase(u.userId);
+		}
+		return false;
+	}
 	
+	@Override
+	public int hashCode(){
+		int hashcode = 0;
+		hashcode += this.userId.hashCode();
+		return hashcode;
+	}
 }
