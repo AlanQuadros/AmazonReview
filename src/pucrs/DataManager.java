@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 public class DataManager {
@@ -135,13 +136,32 @@ public class DataManager {
 	
 	public ArrayList<Product> getBestReviewed(){
 		HashMap<Product, Double> productBestReview = new HashMap<>();
+		HashMap<Integer, Product> idProduct = new HashMap<>();
+		HashMap<Double, Integer> idReview = new HashMap<>();
 		ArrayList<Product> result = new ArrayList<>();
+
 		
 		for(Product p : productReview.keySet()){
 			ArrayList<Review> allReviews = productReview.get(p);
 			if(allReviews.size() >= 10){
-				productBestReview.put(p, averageReview(allReviews));
+				int id = new Random().nextInt();
+				double averageReview = averageReview(allReviews);
+				productBestReview.put(p, averageReview);
+				idProduct.put(id, p);
+				idReview.put(averageReview, id);
 			}
+		}
+		
+		List<Double> averageReviews = new ArrayList<>(productBestReview.values());
+		
+		Collections.sort(averageReviews);
+		
+		while(averageReviews.size() > 20){
+			averageReviews.remove(averageReviews.size()-1);
+		}
+		
+		for(Double b : averageReviews){
+			result.add(idProduct.get(idReview.get(b)));
 		}
 		
 		return result;
