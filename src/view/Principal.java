@@ -31,7 +31,7 @@ public class Principal extends javax.swing.JFrame {
     
     DefaultTableModel dtmAvaliacao = new DefaultTableModel(
             new Object[][]{},
-            new Object[]{"Rating", "Data/Hora", "Resumo", "Texto"}) {
+            new Object[]{"Produto", "Rating", "Data/Hora", "Resumo", "Texto"}) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -74,46 +74,44 @@ public class Principal extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jTableAvaliacao = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtableAvaliacoes = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jtfPesquisarAvaliacao = new javax.swing.JTextField();
         jbPesquisarAvaliacao = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableUsuarios = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jtfUsuarioId = new javax.swing.JTextField();
-        jtfUsuarioNome = new javax.swing.JTextField();
         jbUsuarioClassificacao = new javax.swing.JButton();
-        jbPesquisarUsuarioId = new javax.swing.JButton();
-        jbUsuarioNome = new javax.swing.JButton();
+        jcomboIdNome = new javax.swing.JComboBox<>();
+        jbPesquisar = new javax.swing.JButton();
+        jtfIdNome = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jtableProdutos = new javax.swing.JTable();
-        jLabel4 = new javax.swing.JLabel();
-        jtfProdutosId = new javax.swing.JTextField();
-        jbProdutosId = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        jtfProdutosNome = new javax.swing.JTextField();
-        jbProdutosNome = new javax.swing.JButton();
         jbClassificacaoProdutos = new javax.swing.JButton();
+        jcomboProdutos = new javax.swing.JComboBox<>();
+        jtfProdutos = new javax.swing.JTextField();
+        jbPesquisarProdutos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtableAvaliacoes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Rating", "Data/Hora", "Resumo", "Texto"
+                "Produto", "Rating", "Data/Hora", "Resumo", "Texto"
             }
-        ));
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jTableAvaliacao.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableAvaliacao.setViewportView(jtableAvaliacoes);
 
         jLabel1.setText("Termo");
 
@@ -131,14 +129,13 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTableAvaliacao, javax.swing.GroupLayout.DEFAULT_SIZE, 596, Short.MAX_VALUE)
+                    .addComponent(jTableAvaliacao, javax.swing.GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jtfPesquisarAvaliacao, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jbPesquisarAvaliacao)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jtfPesquisarAvaliacao)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbPesquisarAvaliacao)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -149,8 +146,8 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jtfPesquisarAvaliacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(jbPesquisarAvaliacao))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTableAvaliacao, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                .addGap(10, 10, 10)
+                .addComponent(jTableAvaliacao, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -166,10 +163,6 @@ public class Principal extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTableUsuarios);
 
-        jLabel2.setText("ID");
-
-        jLabel3.setText("Nome");
-
         jbUsuarioClassificacao.setText("Classificação Usuários com Avaliações");
         jbUsuarioClassificacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -177,17 +170,12 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jbPesquisarUsuarioId.setText("Pesquisar");
-        jbPesquisarUsuarioId.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbPesquisarUsuarioIdActionPerformed(evt);
-            }
-        });
+        jcomboIdNome.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome" }));
 
-        jbUsuarioNome.setText("Pesquisar");
-        jbUsuarioNome.addActionListener(new java.awt.event.ActionListener() {
+        jbPesquisar.setText("Pesquisar");
+        jbPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbUsuarioNomeActionPerformed(evt);
+                jbPesquisarActionPerformed(evt);
             }
         });
 
@@ -199,46 +187,29 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtfUsuarioNome))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtfUsuarioId, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jcomboIdNome, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jbPesquisarUsuarioId)
-                            .addComponent(jbUsuarioNome))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                        .addComponent(jtfIdNome, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jbUsuarioClassificacao, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jtfUsuarioId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jbPesquisarUsuarioId))
-                        .addGap(20, 20, 20)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jtfUsuarioNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jbUsuarioNome))
-                        .addGap(9, 9, 9))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jbUsuarioClassificacao, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                .addGap(17, 17, 17)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbUsuarioClassificacao, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcomboIdNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbPesquisar)
+                    .addComponent(jtfIdNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -246,10 +217,7 @@ public class Principal extends javax.swing.JFrame {
 
         jtableProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "ID", "Nome", "Preço", "Avaliações"
@@ -258,28 +226,19 @@ public class Principal extends javax.swing.JFrame {
         jtableProdutos.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(jtableProdutos);
 
-        jLabel4.setText("ID");
-
-        jbProdutosId.setText("Pesquisar");
-        jbProdutosId.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbProdutosIdActionPerformed(evt);
-            }
-        });
-
-        jLabel5.setText("Nome");
-
-        jbProdutosNome.setText("Pesquisar");
-        jbProdutosNome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbProdutosNomeActionPerformed(evt);
-            }
-        });
-
         jbClassificacaoProdutos.setText("Classificação de Produtos mais bem avaliados");
         jbClassificacaoProdutos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbClassificacaoProdutosActionPerformed(evt);
+            }
+        });
+
+        jcomboProdutos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome" }));
+
+        jbPesquisarProdutos.setText("Pesquisar");
+        jbPesquisarProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbPesquisarProdutosActionPerformed(evt);
             }
         });
 
@@ -290,43 +249,28 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtfProdutosNome, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jbProdutosNome, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtfProdutosId, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jbProdutosId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(12, 12, 12)
-                        .addComponent(jbClassificacaoProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jcomboProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbPesquisarProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbClassificacaoProdutos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(jtfProdutosId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jbProdutosId))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(jtfProdutosNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jbProdutosNome)))
-                    .addComponent(jbClassificacaoProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbClassificacaoProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcomboProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbPesquisarProdutos))
+                .addGap(25, 25, 25)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -348,10 +292,12 @@ public class Principal extends javax.swing.JFrame {
 
     private void jbPesquisarAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPesquisarAvaliacaoActionPerformed
         
-        dtmAvaliacao.setRowCount(0);
         ArrayList<Review> reviews = dataManager.searchReviewByString(jtfPesquisarAvaliacao.getText());        
+        DefaultTableModel tab = (DefaultTableModel) jtableAvaliacoes.getModel();
+        tab.setNumRows(0);
         
         for(Review rev : reviews){
+            String productTitle = rev.getProducts().getTitle();
             String score = String.valueOf(rev.getScore());
             long time1 = rev.getTime();
             LocalDateTime time2 = LocalDateTime.ofInstant(Instant.ofEpochSecond(time1), ZoneOffset.UTC);
@@ -359,137 +305,37 @@ public class Principal extends javax.swing.JFrame {
             String summary = rev.getSummary();
             String text = rev.getText();
             
-            dtmAvaliacao.addRow(new String[] {score, time, summary, text});
+            tab.addRow(new String[] {productTitle, score, time, summary, text});
         }
         
     }//GEN-LAST:event_jbPesquisarAvaliacaoActionPerformed
 
-    private void jbPesquisarUsuarioIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPesquisarUsuarioIdActionPerformed
-       
-        User user = dataManager.searchUserById(jtfUsuarioId.getText()); 
-        DefaultTableModel tabUser = (DefaultTableModel) jTableUsuarios.getModel();
-        tabUser.setNumRows(0);
-        
-        String id = user.getUserId();
-        String nome = user.getProfileName();
-        
-        ArrayList<Review> revs = dataManager.getReviewByUser(user);
-        
-        String reviews = "";
-        
-        for(Review rev: revs){
-            String review = rev.getText();
-            reviews = reviews+review+" / ";
-        }
-        tabUser.addRow(new String[]{id, nome, reviews});
-        
-        
-        
-        System.out.println(id+"\n"+nome+"\n"+reviews);
-        
-    }//GEN-LAST:event_jbPesquisarUsuarioIdActionPerformed
-
-    private void jbUsuarioNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbUsuarioNomeActionPerformed
-        
-        User user = dataManager.searchUserByName(jtfUsuarioNome.getText());
-        DefaultTableModel tabUser = (DefaultTableModel) jTableUsuarios.getModel();
-        tabUser.setNumRows(0);
-        
-        String id = user.getUserId();
-        String nome = user.getProfileName();
-        
-        ArrayList<Review> revs = dataManager.getReviewByUser(user);
-        String reviews = "";
-        
-        for(Review rev: revs){
-            String review = rev.getText();
-            reviews = reviews+review+"\n";
-        }
-        tabUser.addRow(new String[]{id, nome, reviews});
-    }//GEN-LAST:event_jbUsuarioNomeActionPerformed
-
     private void jbUsuarioClassificacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbUsuarioClassificacaoActionPerformed
                 
         ArrayList<User> userReview = dataManager.getUsefulUsers();
+        DefaultTableModel tab = (DefaultTableModel) jTableUsuarios.getModel();
+        tab.setNumRows(0);
+        
         for(User user : userReview){
             String id = user.getUserId();
             String nome = user.getProfileName();
             
-            ArrayList<Review> reviews = user.returnAllReviews();
+            ArrayList<Review> reviews = dataManager.getReviewByUser(user);
             String revs = "";
             for(Review r : reviews){
-                String rev = String.valueOf(r.getScore());
+                String rev = r.getText();
                 revs = revs + rev + " / ";
             }
             
-            dtmUsuarios.addRow(new String[] {id, nome, revs});
+            tab.addRow(new String[] {id, nome, revs});
         }
     }//GEN-LAST:event_jbUsuarioClassificacaoActionPerformed
-
-    private void jbProdutosIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbProdutosIdActionPerformed
-       
-        Product product = dataManager.searchProductById(jtfProdutosId.getText());
-        DefaultTableModel tabProduct = (DefaultTableModel) jtableProdutos.getModel();
-        tabProduct.setNumRows(0);
-        
-        System.out.println(product.getProductId()+"\n"+product.getTitle()+"\n"+product.getPrice());
-        
-        String id = product.getProductId();
-        String nome = product.getTitle();        
-        
-        Double price1 = product.getPrice();
-        String price = "";
-        
-        System.out.println(price1);
-        
-        if(price1 == Product.UNKOWN_PRICE){
-            price = "Unkown Price";
-        } else if(price1 == Product.UNDEFINED_PRICE){
-            price = "Undefined Price";
-        } else {
-            price = String.valueOf(price1);
-        }
-        
-        ArrayList<Review> reviews = product.getAllReviews();
-        String revs = "";
-        for(Review rev : reviews){
-            String r = String.valueOf(rev.getScore());
-            revs = revs + r + " / ";
-        }
-        
-        tabProduct.addRow(new String[] {id, nome, price, revs});
-    }//GEN-LAST:event_jbProdutosIdActionPerformed
-
-    private void jbProdutosNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbProdutosNomeActionPerformed
-        
-        Product product = dataManager.searchProductByName(jtfProdutosNome.getText());
-        
-        String id = product.getProductId();
-        String nome = product.getTitle();
-        double price1 = product.getPrice();
-        String price = "";
-        
-        if(price1 == Product.UNKOWN_PRICE){
-            price = "Unkown Price";
-        } else if(price1 == Product.UNDEFINED_PRICE){
-            price = "Undefined Price";
-        } else {
-            price = String.valueOf(price1);
-        }
-        
-        ArrayList<Review> reviews = product.getAllReviews();
-        String revs = "";
-        for(Review rev : reviews){
-            String r = String.valueOf(rev.getScore());
-            revs = revs + r + " / ";
-        }
-        
-        dtmProdutos.addRow(new String[] {id, nome, price, revs});
-    }//GEN-LAST:event_jbProdutosNomeActionPerformed
 
     private void jbClassificacaoProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbClassificacaoProdutosActionPerformed
         
         ArrayList<Product> productsReviews = dataManager.getBestReviewed();
+        DefaultTableModel tab = (DefaultTableModel) jtableProdutos.getModel();
+        tab.setNumRows(0);
         
         for(Product product : productsReviews){
             String id = product.getProductId();
@@ -505,16 +351,116 @@ public class Principal extends javax.swing.JFrame {
                 price = String.valueOf(price1);
             }
             
-            ArrayList<Review> reviews = product.getAllReviews();
+            ArrayList<Review> reviews = dataManager.getReviewByProduct(product);
             String revs = "";
-            for(Review rev : reviews){
-                String r = String.valueOf(rev.getScore());
-                revs = revs + r + " / ";
-            }
+            double media = dataManager.averageReview(reviews);                    
 
-            dtmProdutos.addRow(new String[] {id, nome, price, revs});
+            tab.addRow(new String[] {id, nome, price, String.valueOf(media)});
         }
     }//GEN-LAST:event_jbClassificacaoProdutosActionPerformed
+
+    private void jbPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPesquisarActionPerformed
+        User user;
+        
+        if(jcomboIdNome.getSelectedItem().equals("ID")){
+            user =  dataManager.searchUserById(jtfIdNome.getText()); 
+            DefaultTableModel tabUser = (DefaultTableModel) jTableUsuarios.getModel();
+            tabUser.setNumRows(0);
+            
+            String id = user.getUserId();
+            String nome = user.getProfileName();
+
+            ArrayList<Review> revs = dataManager.getReviewByUser(user);
+
+            String reviews = "";
+
+            for(Review rev: revs){
+                String review = rev.getText();
+                reviews = reviews+review+" / ";
+            }
+            tabUser.addRow(new String[]{id, nome, reviews});
+
+            System.out.println(id+"\n"+nome+"\n"+reviews);
+        } else {
+            user =  dataManager.searchUserByName(jtfIdNome.getText()); 
+            DefaultTableModel tabUser = (DefaultTableModel) jTableUsuarios.getModel();
+            tabUser.setNumRows(0);
+            
+            String id = user.getUserId();
+            String nome = user.getProfileName();
+
+            ArrayList<Review> revs = dataManager.getReviewByUser(user);
+            String reviews = "";
+
+            for(Review rev: revs){
+                String review = rev.getText();
+                reviews = reviews+review+"\n";
+            }
+            tabUser.addRow(new String[]{id, nome, reviews});
+        }
+        
+    }//GEN-LAST:event_jbPesquisarActionPerformed
+
+    private void jbPesquisarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPesquisarProdutosActionPerformed
+        
+        if(jcomboProdutos.getSelectedItem().equals("ID")){
+            Product product = dataManager.searchProductById(jtfProdutos.getText());
+            DefaultTableModel tabProduct = (DefaultTableModel) jtableProdutos.getModel();
+            tabProduct.setNumRows(0);       
+
+            String id = product.getProductId();
+            String nome = product.getTitle();        
+
+            double price1 = product.getPrice();
+            String price = "";
+
+            System.out.println(price1);
+
+            if(price1 == Product.UNKOWN_PRICE){
+                price = "Unkown Price";
+            } else if(price1 == Product.UNDEFINED_PRICE){
+                price = "Undefined Price";
+            } else {
+                price = String.valueOf(price1);
+            }
+
+            ArrayList<Review> reviews = dataManager.getReviewByProduct(product);
+            String revs = "";
+            for(Review rev : reviews){
+                String r = rev.getText();
+                revs = revs + r + " \n ";
+            }
+
+            tabProduct.addRow(new String[] {id, nome, price, revs});
+
+        } else {
+            Product product = dataManager.searchProductByName(jtfProdutos.getText());
+            DefaultTableModel tabProduct = (DefaultTableModel) jtableProdutos.getModel();
+            tabProduct.setNumRows(0);        
+
+            String id = product.getProductId();
+            String nome = product.getTitle();
+            double price1 = product.getPrice();
+            String price = "";
+
+            if(price1 == Product.UNKOWN_PRICE){
+                price = "Unkown Price";
+            } else if(price1 == Product.UNDEFINED_PRICE){
+                price = "Undefined Price";
+            } else {
+                price = String.valueOf(price1);
+            }
+
+            ArrayList<Review> reviews = dataManager.getReviewByProduct(product);
+            String revs = "";
+            for(Review rev : reviews){
+                String r = rev.getText();
+                revs = revs + r + " \n ";
+            }
+
+            tabProduct.addRow(new String[] {id, nome, price, revs});
+        }
+    }//GEN-LAST:event_jbPesquisarProdutosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -553,31 +499,25 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JScrollPane jTableAvaliacao;
     private javax.swing.JTable jTableUsuarios;
     private javax.swing.JButton jbClassificacaoProdutos;
+    private javax.swing.JButton jbPesquisar;
     private javax.swing.JButton jbPesquisarAvaliacao;
-    private javax.swing.JButton jbPesquisarUsuarioId;
-    private javax.swing.JButton jbProdutosId;
-    private javax.swing.JButton jbProdutosNome;
+    private javax.swing.JButton jbPesquisarProdutos;
     private javax.swing.JButton jbUsuarioClassificacao;
-    private javax.swing.JButton jbUsuarioNome;
+    private javax.swing.JComboBox<String> jcomboIdNome;
+    private javax.swing.JComboBox<String> jcomboProdutos;
+    private javax.swing.JTable jtableAvaliacoes;
     private javax.swing.JTable jtableProdutos;
+    private javax.swing.JTextField jtfIdNome;
     private javax.swing.JTextField jtfPesquisarAvaliacao;
-    private javax.swing.JTextField jtfProdutosId;
-    private javax.swing.JTextField jtfProdutosNome;
-    private javax.swing.JTextField jtfUsuarioId;
-    private javax.swing.JTextField jtfUsuarioNome;
+    private javax.swing.JTextField jtfProdutos;
     // End of variables declaration//GEN-END:variables
 }

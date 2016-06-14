@@ -69,6 +69,7 @@ public class DataManager {
 				Product product = new Product(productId, title, doublePrice);
 				review.setHelp(help);
 				review.setUser(user);
+                                review.setProducts(product);
 				allReview.add(review);
 				
 				if (!productReview.containsKey(product)) {
@@ -211,7 +212,7 @@ public class DataManager {
 		}
 	}
 	
- 	private Double averageReview(ArrayList<Review> reviews){
+ 	public double averageReview(ArrayList<Review> reviews){
 		double result = 0;
 		
 		for(Review r : reviews){
@@ -219,6 +220,6 @@ public class DataManager {
 		}
 		
 		return result/reviews.size();
-	}
+	}       
 	
 }

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Product implements Comparable<Product> {
 
-	public static final Double UNKOWN_PRICE = -1.0;
-	public static final Double UNDEFINED_PRICE = -2.0;
+	public static final double UNKOWN_PRICE = -1;
+	public static final double UNDEFINED_PRICE = -2;
 	private String productId;
 	private String title;
 	private Double price;// Cuidado, price pode ser null
