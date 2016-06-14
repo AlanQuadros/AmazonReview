@@ -5,7 +5,13 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -204,12 +210,19 @@ public class DataManager {
 		return usefulList;
 	}
 	
-	public void assessmentsPerMonth(){
-		
-		for (User user : userReview.keySet()) {
-			ArrayList<Review> userReviews = userReview.get(user);
-			
-		}
+	public void assessmentsPerMonth(LocalDateTime mesInicio, LocalDateTime mesFim){
+            
+            HashMap<Month, Integer> assessments = new HashMap<>();
+            
+            LocalDate hora = LocalDate.now();
+            for (Review review : allReview) {
+                long time1 = review.getTime();
+                LocalDateTime time2 = LocalDateTime.ofInstant(Instant.ofEpochSecond(time1), ZoneOffset.UTC);
+                if (assessments.containsKey(time2.getMonth())) {
+                    assessments.replace(time2.getMonth(), assessments.get(time2.getMonth())+1);
+                }
+            }
+           
 	}
 	
  	public double averageReview(ArrayList<Review> reviews){
