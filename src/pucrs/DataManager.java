@@ -59,7 +59,7 @@ public class DataManager {
 				sc.next();
 
 				Double doublePrice;
-				if (price.matches("[0-9]*"))
+				if (!price.equalsIgnoreCase("unknown"))
 					doublePrice = Double.parseDouble(price);
 				else
 					doublePrice = null;// o importante é funcionar

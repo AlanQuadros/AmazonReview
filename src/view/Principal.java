@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.table.DefaultTableModel;
 import pucrs.DataManager;
 import pucrs.Product;
@@ -56,7 +57,9 @@ public class Principal extends javax.swing.JFrame {
     
     public Principal() {
         initComponents();
-        dataManager = new DataManager();        
+        dataManager = new DataManager(); 
+        dataManager.leitura();
+        
     }
 
     /**
@@ -87,7 +90,7 @@ public class Principal extends javax.swing.JFrame {
         jbUsuarioNome = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        jtableProdutos = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         jtfProdutosId = new javax.swing.JTextField();
         jbProdutosId = new javax.swing.JButton();
@@ -155,10 +158,7 @@ public class Principal extends javax.swing.JFrame {
 
         jTableUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "ID", "Nome", "Avaliações"
@@ -244,7 +244,7 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Usuários", jPanel2);
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        jtableProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -255,8 +255,8 @@ public class Principal extends javax.swing.JFrame {
                 "ID", "Nome", "Preço", "Avaliações"
             }
         ));
-        jTable3.getTableHeader().setReorderingAllowed(false);
-        jScrollPane3.setViewportView(jTable3);
+        jtableProdutos.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(jtableProdutos);
 
         jLabel4.setText("ID");
 
@@ -292,20 +292,20 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jtfProdutosNome, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jbProdutosNome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jbProdutosNome, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jtfProdutosId, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jbProdutosId, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                                .addComponent(jbProdutosId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(12, 12, 12)
                         .addComponent(jbClassificacaoProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -347,9 +347,9 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbPesquisarAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPesquisarAvaliacaoActionPerformed
-        DataManager dm = new DataManager();
+        
         dtmAvaliacao.setRowCount(0);
-        ArrayList<Review> reviews = dm.searchReviewByString(jtfPesquisarAvaliacao.getText());        
+        ArrayList<Review> reviews = dataManager.searchReviewByString(jtfPesquisarAvaliacao.getText());        
         
         for(Review rev : reviews){
             String score = String.valueOf(rev.getScore());
@@ -365,45 +365,52 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jbPesquisarAvaliacaoActionPerformed
 
     private void jbPesquisarUsuarioIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPesquisarUsuarioIdActionPerformed
-        DataManager dm = new DataManager();
-        User user = dm.searchUserById(jtfUsuarioId.getText());
-        
-        //System.out.println(user);
+       
+        User user = dataManager.searchUserById(jtfUsuarioId.getText()); 
+        DefaultTableModel tabUser = (DefaultTableModel) jTableUsuarios.getModel();
+        tabUser.setNumRows(0);
         
         String id = user.getUserId();
         String nome = user.getProfileName();
         
-        ArrayList<Review> revs = user.returnAllReviews();
+        ArrayList<Review> revs = dataManager.getReviewByUser(user);
+        
         String reviews = "";
         
         for(Review rev: revs){
-            String review = String.valueOf(rev.getScore());
+            String review = rev.getText();
             reviews = reviews+review+" / ";
         }
-        dtmUsuarios.addRow(new String[]{id, nome, reviews});
+        tabUser.addRow(new String[]{id, nome, reviews});
+        
+        
+        
+        System.out.println(id+"\n"+nome+"\n"+reviews);
+        
     }//GEN-LAST:event_jbPesquisarUsuarioIdActionPerformed
 
     private void jbUsuarioNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbUsuarioNomeActionPerformed
-        DataManager dm = new DataManager();
-        User user = dm.searchUserByName(jtfUsuarioNome.getText());
+        
+        User user = dataManager.searchUserByName(jtfUsuarioNome.getText());
+        DefaultTableModel tabUser = (DefaultTableModel) jTableUsuarios.getModel();
+        tabUser.setNumRows(0);
         
         String id = user.getUserId();
         String nome = user.getProfileName();
         
-        ArrayList<Review> revs = user.returnAllReviews();
+        ArrayList<Review> revs = dataManager.getReviewByUser(user);
         String reviews = "";
         
         for(Review rev: revs){
-            String review = String.valueOf(rev.getScore());
-            reviews = reviews+review+" / ";
+            String review = rev.getText();
+            reviews = reviews+review+"\n";
         }
-        dtmUsuarios.addRow(new String[]{id, nome, reviews});
+        tabUser.addRow(new String[]{id, nome, reviews});
     }//GEN-LAST:event_jbUsuarioNomeActionPerformed
 
     private void jbUsuarioClassificacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbUsuarioClassificacaoActionPerformed
-        DataManager dm = new DataManager();
-        
-        ArrayList<User> userReview = dm.getUsefulUsers();
+                
+        ArrayList<User> userReview = dataManager.getUsefulUsers();
         for(User user : userReview){
             String id = user.getUserId();
             String nome = user.getProfileName();
@@ -420,13 +427,20 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jbUsuarioClassificacaoActionPerformed
 
     private void jbProdutosIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbProdutosIdActionPerformed
-        DataManager dm = new DataManager();
-        Product product = dm.searchProductById(jtfProdutosId.getText());
+       
+        Product product = dataManager.searchProductById(jtfProdutosId.getText());
+        DefaultTableModel tabProduct = (DefaultTableModel) jtableProdutos.getModel();
+        tabProduct.setNumRows(0);
+        
+        System.out.println(product.getProductId()+"\n"+product.getTitle()+"\n"+product.getPrice());
         
         String id = product.getProductId();
-        String nome = product.getTitle();
-        double price1 = product.getPrice();
+        String nome = product.getTitle();        
+        
+        Double price1 = product.getPrice();
         String price = "";
+        
+        System.out.println(price1);
         
         if(price1 == Product.UNKOWN_PRICE){
             price = "Unkown Price";
@@ -443,12 +457,12 @@ public class Principal extends javax.swing.JFrame {
             revs = revs + r + " / ";
         }
         
-        dtmProdutos.addRow(new String[] {id, nome, price, revs});
+        tabProduct.addRow(new String[] {id, nome, price, revs});
     }//GEN-LAST:event_jbProdutosIdActionPerformed
 
     private void jbProdutosNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbProdutosNomeActionPerformed
-        DataManager dm = new DataManager();
-        Product product = dm.searchProductByName(jtfProdutosNome.getText());
+        
+        Product product = dataManager.searchProductByName(jtfProdutosNome.getText());
         
         String id = product.getProductId();
         String nome = product.getTitle();
@@ -474,8 +488,8 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jbProdutosNomeActionPerformed
 
     private void jbClassificacaoProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbClassificacaoProdutosActionPerformed
-        DataManager dm = new DataManager();
-        ArrayList<Product> productsReviews = dm.getBestReviewed();
+        
+        ArrayList<Product> productsReviews = dataManager.getBestReviewed();
         
         for(Product product : productsReviews){
             String id = product.getProductId();
@@ -550,7 +564,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable3;
     private javax.swing.JScrollPane jTableAvaliacao;
     private javax.swing.JTable jTableUsuarios;
     private javax.swing.JButton jbClassificacaoProdutos;
@@ -560,6 +573,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jbProdutosNome;
     private javax.swing.JButton jbUsuarioClassificacao;
     private javax.swing.JButton jbUsuarioNome;
+    private javax.swing.JTable jtableProdutos;
     private javax.swing.JTextField jtfPesquisarAvaliacao;
     private javax.swing.JTextField jtfProdutosId;
     private javax.swing.JTextField jtfProdutosNome;
