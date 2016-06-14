@@ -8,9 +8,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class DataManager {
 
@@ -143,45 +146,32 @@ public class DataManager {
 	
 	public ArrayList<Product> getBestReviewed(){
 		HashMap<Product, Double> productBestReview = new HashMap<>();
-		HashMap<Integer, Product> idProduct = new HashMap<>();
-		HashMap<Double, Integer> idReview = new HashMap<>();
-		ArrayList<Product> result = new ArrayList<>();
-
 		
 		for(Product p : productReview.keySet()){
 			ArrayList<Review> allReviews = productReview.get(p);
 			if(allReviews.size() >= 10){
-				int id = new Random().nextInt();
 				double averageReview = averageReview(allReviews);
 				productBestReview.put(p, averageReview);
-				idProduct.put(id, p);
-				idReview.put(averageReview, id);
 			}
 		}
 		
-		List<Double> averageReviews = new ArrayList<>(productBestReview.values());
+		productBestReview = productBestReview.entrySet().stream()
+				.sorted(Map.Entry.<Product,Double> comparingByValue().reversed())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 		
-		Collections.sort(averageReviews);
+		ArrayList<Product> averageReviews = new ArrayList<>(productBestReview.keySet());
 		
 		while(averageReviews.size() > 20){
 			averageReviews.remove(averageReviews.size()-1);
 		}
 		
-		for(Double b : averageReviews){
-			result.add(idProduct.get(idReview.get(b)));
-		}
-		
-		return result;
+		return averageReviews;
 	}
 	
 	public ArrayList<User> getUsefulUsers(){
 		HashMap<User, Double> usefulUser = new HashMap<>(); 
-		HashMap<Integer, User> idUser = new HashMap<>();
-		HashMap<Double, Integer> idUseful = new HashMap<>();
-		ArrayList<User> result = new ArrayList<>();
 		
 		for (User user : userReview.keySet()) {
-			int id = new Random().nextInt();
 			ArrayList<Review> userReviews = userReview.get(user);
 			double positive = 0;
 			double total = 0;
@@ -192,23 +182,19 @@ public class DataManager {
 			if (total > 0) {
 				Double useful = positive/total;  
 				usefulUser.put(user, useful);
-				idUser.put(id, user);
-				idUseful.put(useful, id);
 			}
 		}
+		usefulUser = usefulUser.entrySet().stream()
+				.sorted(Map.Entry.<User,Double> comparingByValue().reversed())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 		
-		List<Double> usefulList = new ArrayList<>(usefulUser.values());
-		Collections.sort(usefulList);
+		ArrayList<User> usefulList = new ArrayList<>(usefulUser.keySet());
 		
 		while(usefulList.size() > 20){
 			usefulList.remove(usefulList.size()-1);
 		}
 		
-		for (Double i : usefulList) {
-			result.add(idUser.get(idUseful.get(i)));
-		}
-		
-		return result;
+		return usefulList;
 	}
 	
 	public void assessmentsPerMonth(){
