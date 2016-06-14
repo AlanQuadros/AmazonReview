@@ -100,6 +100,10 @@ public class DataManager {
             return userReview.get(user);
         }
         
+        public ArrayList<Review> getReviewByProduct(Product product){
+            return productReview.get(product);
+        }
+        
 	public Product searchProductById(String search) {
 		for (Product p : productReview.keySet()) {
 			if (p.getProductId().equalsIgnoreCase(search))
