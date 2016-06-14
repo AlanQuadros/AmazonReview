@@ -93,25 +93,38 @@ public class DataManager {
 		}
 	}
 
-	public Product searchProductByIdName(String search) {
+	public Product searchProductById(String search) {
 		for (Product p : productReview.keySet()) {
 			if (p.getProductId().equalsIgnoreCase(search))
-				return p;
-			else if (p.getTitle().toUpperCase().contains(search.toUpperCase()))
 				return p;
 		}
 
 		return null;
 	}
+        
+        public Product searchProductByName(String search) {
+            for (Product p : productReview.keySet()) {
+                if (p.getTitle().toUpperCase().contains(search.toUpperCase()))
+                    return p;
+            }
 
-	public User searchUserByIdName(String search) {
-		for (User u : userReview.keySet()) {
-			if (u.getUserId().equalsIgnoreCase(search))
-				return u;
-			else if (u.getProfileName().toUpperCase().contains(search.toUpperCase()))
-				return u;
-		}
-		return null;
+            return null;
+	}
+
+	public User searchUserById(String search) {
+            for (User u : userReview.keySet()) {
+                if (u.getUserId().equalsIgnoreCase(search))
+                    return u;
+            }
+            return null;
+	}
+        
+        public User searchUserByName(String search) {
+            for (User u : userReview.keySet()) {
+                if (u.getProfileName().toUpperCase().contains(search.toUpperCase()))
+                    return u;
+            }
+            return null;
 	}
 
 	public ArrayList<Review> searchReviewByString(String partOfString) {
