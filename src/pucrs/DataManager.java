@@ -56,11 +56,11 @@ public class DataManager {
 				text = next.substring(next.indexOf(":") + 2);
 				sc.next();
 
-				Double doublePrice;
+				double doublePrice;
 				if (!price.equalsIgnoreCase("unknown"))
 					doublePrice = Double.parseDouble(price);
 				else
-					doublePrice = null;// o importante é funcionar
+					doublePrice = -1;// o importante é funcionar
 
 				// insere os atributos
 				Helpfulness help = new Helpfulness(Integer.parseInt(positive), Integer.parseInt(total));
