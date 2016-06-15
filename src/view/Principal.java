@@ -13,6 +13,12 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.table.DefaultTableModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import pucrs.DataManager;
 import pucrs.Product;
 import pucrs.Review;
@@ -60,12 +66,17 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         dataManager = new DataManager(); 
         dataManager.leitura();
-        LocalDateTime inicio = LocalDateTime.of(2011, Month.MARCH, 1, 0,0);
-        LocalDateTime fim = LocalDateTime.of(2012, Month.JUNE, 28, 0,0);
-        HashMap<LocalDateTime,Integer> hash = dataManager.assessmentsPerMonth(inicio,fim);
-        for (LocalDateTime meses : hash.keySet()) {
-            System.out.println(meses.getYear()+" - "+meses.getMonth()+" - "+hash.get(meses));
-        }
+        
+        criaGrafico();
+        
+//        LocalDateTime inicio = LocalDateTime.of(2011, Month.MARCH, 1, 0,0);
+//        LocalDateTime fim = LocalDateTime.of(2012, Month.JUNE, 28, 0,0);
+//        
+//        HashMap<LocalDateTime,Integer> hash = dataManager.assessmentsPerMonth(inicio,fim);
+//        for (LocalDateTime meses : hash.keySet()) {
+//            System.out.println(meses.getYear()+" - "+meses.getMonth()+" - "+hash.get(meses));
+//            dataset.addValue(hash.get(meses), meses.getYear()+"/"+meses.getMonth(), "Mês/Ano");
+//        }
     }
 
     /**
@@ -88,16 +99,27 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableUsuarios = new javax.swing.JTable();
         jbUsuarioClassificacao = new javax.swing.JButton();
-        jcomboIdNome = new javax.swing.JComboBox<>();
+        jcomboIdNome = new javax.swing.JComboBox<String>();
         jbPesquisar = new javax.swing.JButton();
         jtfIdNome = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jtableProdutos = new javax.swing.JTable();
         jbClassificacaoProdutos = new javax.swing.JButton();
-        jcomboProdutos = new javax.swing.JComboBox<>();
+        jcomboProdutos = new javax.swing.JComboBox<String>();
         jtfProdutos = new javax.swing.JTextField();
         jbPesquisarProdutos = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jcomboMesInicialRevs = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
+        jtfAnoInicialRevs = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jcomboMesFinalRevs = new javax.swing.JComboBox();
+        jLabel5 = new javax.swing.JLabel();
+        jtfAnoFinalRevs = new javax.swing.JTextField();
+        jbPesquisarGraficosRevs = new javax.swing.JButton();
+        jpanelGraficoRevs = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -176,7 +198,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jcomboIdNome.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome" }));
+        jcomboIdNome.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ID", "Nome" }));
 
         jbPesquisar.setText("Pesquisar");
         jbPesquisar.addActionListener(new java.awt.event.ActionListener() {
@@ -239,7 +261,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jcomboProdutos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome" }));
+        jcomboProdutos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ID", "Nome" }));
 
         jbPesquisarProdutos.setText("Pesquisar");
         jbPesquisarProdutos.addActionListener(new java.awt.event.ActionListener() {
@@ -282,6 +304,101 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Produtos", jPanel3);
 
+        jLabel2.setText("Mês inicial");
+
+        jcomboMesInicialRevs.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER" }));
+
+        jLabel3.setText("Ano inicial");
+
+        jtfAnoInicialRevs.setText("1998");
+
+        jLabel4.setText("Mês final");
+
+        jcomboMesFinalRevs.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER" }));
+
+        jLabel5.setText("Ano final");
+
+        jtfAnoFinalRevs.setText("1999");
+
+        jbPesquisarGraficosRevs.setText("Pesquisar");
+        jbPesquisarGraficosRevs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbPesquisarGraficosRevsActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jpanelGraficoRevsLayout = new javax.swing.GroupLayout(jpanelGraficoRevs);
+        jpanelGraficoRevs.setLayout(jpanelGraficoRevsLayout);
+        jpanelGraficoRevsLayout.setHorizontalGroup(
+            jpanelGraficoRevsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jpanelGraficoRevsLayout.setVerticalGroup(
+            jpanelGraficoRevsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jpanelGraficoRevs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jcomboMesInicialRevs, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jtfAnoInicialRevs)))
+                        .addGap(45, 45, 45)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jcomboMesFinalRevs, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtfAnoFinalRevs)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jbPesquisarGraficosRevs, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 168, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jcomboMesInicialRevs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addComponent(jcomboMesFinalRevs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jtfAnoInicialRevs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel5)
+                                .addComponent(jtfAnoFinalRevs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jbPesquisarGraficosRevs)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jpanelGraficoRevs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Reviews mensais", jPanel4);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -296,6 +413,46 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private CategoryDataset createDataset() { 
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset(); 
+        
+        String mesIni = (String) jcomboMesInicialRevs.getSelectedItem();
+        
+        String mesFim = (String) jcomboMesFinalRevs.getSelectedItem();
+        
+        LocalDateTime inicio = LocalDateTime.of(Integer.parseInt(jtfAnoInicialRevs.getText()), Month.valueOf(mesIni), 1, 0,0);
+        LocalDateTime fim = LocalDateTime.of(Integer.parseInt(jtfAnoFinalRevs.getText()), Month.valueOf(mesFim), 28, 0,0);
+        
+        System.out.println(inicio);
+        
+        HashMap<LocalDateTime,Integer> hash = dataManager.assessmentsPerMonth(inicio,fim);
+        System.out.println(hash);
+        for (LocalDateTime meses : hash.keySet()) {
+            //System.out.println(meses.getYear()+" - "+meses.getMonth()+" - "+hash.get(meses));
+            dataset.addValue(hash.get(meses), meses.getYear()+"/"+meses.getMonth(), "Mês/Ano");
+        }
+        
+        return dataset; 
+    }
+    
+    public void criaGrafico() {
+        CategoryDataset cds = createDataset();
+        String titulo = "Reviews por Mês";
+        String eixoy = "Reviewa";
+        String txt_legenda = "Ledenda:";
+        boolean legenda = true;
+        boolean tooltips = true;
+        boolean urls = true;
+        JFreeChart graf = ChartFactory.createBarChart3D(titulo, txt_legenda, eixoy, cds, PlotOrientation.HORIZONTAL.VERTICAL, legenda, tooltips, urls);
+        ChartPanel myChartPanel = new ChartPanel(graf, true);
+        myChartPanel.setSize(jpanelGraficoRevs.getWidth(),jpanelGraficoRevs.getHeight());
+        myChartPanel.setVisible(true); 
+        jpanelGraficoRevs.removeAll();
+        jpanelGraficoRevs.add(myChartPanel); 
+        jpanelGraficoRevs.revalidate();
+        jpanelGraficoRevs.repaint();                 
+    }
+    
     private void jbPesquisarAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPesquisarAvaliacaoActionPerformed
         
         ArrayList<Review> reviews = dataManager.searchReviewByString(jtfPesquisarAvaliacao.getText());        
@@ -468,6 +625,19 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jbPesquisarProdutosActionPerformed
 
+    private void jbPesquisarGraficosRevsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPesquisarGraficosRevsActionPerformed
+        jcomboMesInicialRevs.getSelectedItem();
+        jcomboMesFinalRevs.getSelectedItem();
+        jtfAnoInicialRevs.getText();
+        jtfAnoFinalRevs.getText();
+        
+        criaGrafico();
+    }//GEN-LAST:event_jbPesquisarGraficosRevsActionPerformed
+
+    
+
+
+    
     /**
      * @param args the command line arguments
      */
@@ -505,9 +675,14 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
@@ -516,12 +691,18 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jbClassificacaoProdutos;
     private javax.swing.JButton jbPesquisar;
     private javax.swing.JButton jbPesquisarAvaliacao;
+    private javax.swing.JButton jbPesquisarGraficosRevs;
     private javax.swing.JButton jbPesquisarProdutos;
     private javax.swing.JButton jbUsuarioClassificacao;
     private javax.swing.JComboBox<String> jcomboIdNome;
+    private javax.swing.JComboBox jcomboMesFinalRevs;
+    private javax.swing.JComboBox jcomboMesInicialRevs;
     private javax.swing.JComboBox<String> jcomboProdutos;
+    private javax.swing.JPanel jpanelGraficoRevs;
     private javax.swing.JTable jtableAvaliacoes;
     private javax.swing.JTable jtableProdutos;
+    private javax.swing.JTextField jtfAnoFinalRevs;
+    private javax.swing.JTextField jtfAnoInicialRevs;
     private javax.swing.JTextField jtfIdNome;
     private javax.swing.JTextField jtfPesquisarAvaliacao;
     private javax.swing.JTextField jtfProdutos;
