@@ -168,7 +168,7 @@ public class DataManager {
 			}
 		}
 		
-		productBestReview = productBestReview.entrySet().stream()
+		productBestReview = productBestReview.entrySet().parallelStream()
 				.sorted(Map.Entry.<Product,Double> comparingByValue().reversed())
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 		
@@ -197,7 +197,7 @@ public class DataManager {
 				usefulUser.put(user, useful);
 			}
 		}
-		usefulUser = usefulUser.entrySet().stream()
+		usefulUser = usefulUser.entrySet().parallelStream()
 				.sorted(Map.Entry.<User,Double> comparingByValue().reversed())
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 		
@@ -218,7 +218,9 @@ public class DataManager {
             for (Review review : allReview) {
                 long time1 = review.getTime();
                 LocalDateTime time2 = LocalDateTime.ofInstant(Instant.ofEpochSecond(time1), ZoneOffset.UTC);
-                if (time2.isEqual(mesInicio)||time2.equals(mesFim)||(time2.isAfter(mesInicio)||time2.isBefore(mesFim))) {
+                time2 = time2.minusDays(time2.getDayOfMonth()-1);
+                time2 = time2.minusHours(time2.getHour());
+                if (time2.isEqual(mesInicio)||time2.isEqual(mesFim)||(time2.isAfter(mesInicio)&&time2.isBefore(mesFim))) {
                     if (assessments.containsKey(time2)) {
                         assessments.replace(time2, assessments.get(time2)+1);
                     }else{
@@ -226,8 +228,15 @@ public class DataManager {
                     }
                 }
             }
+            
+            assessments = assessments.entrySet().parallelStream()
+                    .sorted(Map.Entry.<LocalDateTime,Integer>comparingByKey())
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));;
+            
            return assessments;
 	}
+        
+        
 	
  	public double averageReview(ArrayList<Review> reviews){
 		double result = 0;

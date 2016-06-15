@@ -8,6 +8,7 @@ package view;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +60,12 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         dataManager = new DataManager(); 
         dataManager.leitura();
+        LocalDateTime inicio = LocalDateTime.of(2011, Month.MARCH, 1, 0,0);
+        LocalDateTime fim = LocalDateTime.of(2012, Month.JUNE, 28, 0,0);
+        HashMap<LocalDateTime,Integer> hash = dataManager.assessmentsPerMonth(inicio,fim);
+        for (LocalDateTime meses : hash.keySet()) {
+            System.out.println(meses.getYear()+" - "+meses.getMonth()+" - "+hash.get(meses));
+        }
     }
 
     /**
