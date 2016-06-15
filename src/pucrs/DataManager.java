@@ -210,19 +210,23 @@ public class DataManager {
 		return usefulList;
 	}
 	
-	public void assessmentsPerMonth(LocalDateTime mesInicio, LocalDateTime mesFim){
+	public HashMap<LocalDateTime, Integer> assessmentsPerMonth(LocalDateTime mesInicio, LocalDateTime mesFim){
             
-            HashMap<Month, Integer> assessments = new HashMap<>();
+            HashMap<LocalDateTime, Integer> assessments = new HashMap<>();
             
             LocalDate hora = LocalDate.now();
             for (Review review : allReview) {
                 long time1 = review.getTime();
                 LocalDateTime time2 = LocalDateTime.ofInstant(Instant.ofEpochSecond(time1), ZoneOffset.UTC);
-                if (assessments.containsKey(time2.getMonth())) {
-                    assessments.replace(time2.getMonth(), assessments.get(time2.getMonth())+1);
+                if (time2.isEqual(mesInicio)||time2.equals(mesFim)||(time2.isAfter(mesInicio)||time2.isBefore(mesFim))) {
+                    if (assessments.containsKey(time2)) {
+                        assessments.replace(time2, assessments.get(time2)+1);
+                    }else{
+                        assessments.put(time2, 1);
+                    }
                 }
             }
-           
+           return assessments;
 	}
 	
  	public double averageReview(ArrayList<Review> reviews){

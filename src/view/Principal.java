@@ -59,7 +59,6 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         dataManager = new DataManager(); 
         dataManager.leitura();
-        
     }
 
     /**
