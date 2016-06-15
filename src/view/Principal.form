@@ -517,7 +517,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jtfAnoInicialRevs">
               <Properties>
-                <Property name="text" type="java.lang.String" value="1998"/>
+                <Property name="text" type="java.lang.String" value="2009"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel4">
@@ -552,7 +552,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jtfAnoFinalRevs">
               <Properties>
-                <Property name="text" type="java.lang.String" value="1999"/>
+                <Property name="text" type="java.lang.String" value="2010"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="jbPesquisarGraficosRevs">

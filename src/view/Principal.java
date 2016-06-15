@@ -310,7 +310,7 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel3.setText("Ano inicial");
 
-        jtfAnoInicialRevs.setText("1998");
+        jtfAnoInicialRevs.setText("2009");
 
         jLabel4.setText("Mês final");
 
@@ -318,7 +318,7 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel5.setText("Ano final");
 
-        jtfAnoFinalRevs.setText("1999");
+        jtfAnoFinalRevs.setText("2010");
 
         jbPesquisarGraficosRevs.setText("Pesquisar");
         jbPesquisarGraficosRevs.addActionListener(new java.awt.event.ActionListener() {
